@@ -11,7 +11,7 @@ module GenericController
     before_action :new_model_instance,
                   :only => [:new]
 
-    delegate :model, :allow_attrs, :to => :class
+    delegate :model, :allow_attrs, :require_name, :to => :class
   end
 
   def new
@@ -42,7 +42,7 @@ module GenericController
   end
 
   def model_params
-    params.require(model.model_name.element).permit(*allow_attrs)
+    params.require(require_name).permit(*allow_attrs)
   end
 
   module ClassMethods
@@ -73,9 +73,14 @@ module GenericController
       end
     end
 
-    def set_model(klass, allow_attrs: [])
+    def set_model(klass, allow_attrs: [], require_name: nil)
       @_model = klass
       @_allow_attrs = allow_attrs
+      @_require_name = require_name || model.model_name.element
+    end
+
+    def require_name
+      @_require_name
     end
 
     def model

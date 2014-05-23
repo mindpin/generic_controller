@@ -15,8 +15,9 @@ describe GenericController do
     controller.should respond_to :destroy
   end
 
-  its(:model) {should be DummyModel}
-  its(:allow_attrs) {should eq [:attr1, :attr2]}
+  its(:model)        {should be DummyModel}
+  its(:allow_attrs)  {should eq [:attr1, :attr2]}
+  its(:require_name) {should eq "dummy_model"}
 
   it "updates model from request" do
     controller.send :find_model_instance
