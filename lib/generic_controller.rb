@@ -46,23 +46,23 @@ module GenericController
   end
 
   module ClassMethods
-    def show_with(&block)
-      with_callback :show, block
+    def show_with(&callback)
+      with_callback :show, callback
     end
 
-    def edit_with(&block)
-      with_callback :edit, block
+    def edit_with(&callback)
+      with_callback :edit, callback
     end
 
-    def update_with(&block)
-      with_callback :update, block do
+    def update_with(&callback)
+      with_callback :update, callback do
         model_instance.update_attributes model_params
         model_instance.save
       end
     end
 
-    def destroy_with(&block)
-      with_callback :destroy, block do
+    def destroy_with(&callback)
+      with_callback :destroy, callback do
         model_instance.destroy
       end
     end
