@@ -25,7 +25,7 @@ describe GenericController do
     controller._instance.updated.should eq "attr1" => "attr1", "attr2" => "attr2"
   end
 
-  it "updates model from request" do
+  it "deletes model from request" do
     controller.send :find_model_instance
     controller.destroy
     controller._instance.destroyed.should be true

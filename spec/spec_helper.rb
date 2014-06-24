@@ -3,6 +3,7 @@ require "action_controller/test_case"
 require "active_model"
 require "generic_controller"
 require "rspec"
+require "pry"
 
 class DummyModel
   include ActiveModel::Model
@@ -39,6 +40,7 @@ class DummyController < ActionController::Base
 
   after_action 
 
+  show_with {render :json => _instance.updated}
   destroy_with {}
   update_with {}
 

@@ -47,29 +47,23 @@ module GenericController
 
   module ClassMethods
     def show_with(&block)
-      define_method :show do
-        instance_eval &block
-      end
+      with_callback :show, block
     end
 
     def edit_with(&block)
-      define_method :edit do
-        instance_eval &block
-      end
+      with_callback :edit, block
     end
 
     def update_with(&block)
-      define_method :update do
+      with_callback :update, block do
         model_instance.update_attributes model_params
         model_instance.save
-        instance_eval &block
       end
     end
 
     def destroy_with(&block)
-      define_method :destroy do
+      with_callback :destroy, block do
         model_instance.destroy
-        instance_eval &block
       end
     end
 
@@ -89,6 +83,17 @@ module GenericController
 
     def allow_attrs
       @_allow_attrs
+    end
+
+    def with_callback(action, callback, &block)
+      method_name = "__#{action}_callback__"
+
+      define_method method_name, &callback
+
+      define_method action do
+        instance_eval &block if block
+        send method_name
+      end
     end
   end
 end
