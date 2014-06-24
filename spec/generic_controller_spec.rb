@@ -22,7 +22,8 @@ describe GenericController do
   it "updates model from request" do
     controller.send :find_model_instance
     controller.update
-    controller._instance.updated.should eq "attr1" => "attr1", "attr2" => "attr2"
+    updated = {"attr1" => "attr1", "attr2" => "attr2", "sf" => ["a", "string"]} 
+    controller._instance.updated.should eq updated
   end
 
   it "deletes model from request" do

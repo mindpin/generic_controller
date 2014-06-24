@@ -54,9 +54,14 @@ module GenericController
       with_callback :edit, callback
     end
 
-    def update_with(&callback)
+    def update_with(extra = {}, &callback)
       with_callback :update, callback do
-        model_instance.update_attributes model_params
+        fields = extra.reduce({}) do |a, (k, v)|
+          a[k] = instance_eval &v
+          a
+        end
+
+        model_instance.attributes = model_params.merge(fields)
         model_instance.save
       end
     end

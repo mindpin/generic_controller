@@ -20,6 +20,10 @@ class DummyModel
     @updated = parameters
   end
 
+  def attributes=(parameters)
+    @updated = parameters
+  end
+
   def save
     true
   end
@@ -38,11 +42,17 @@ class DummyController < ActionController::Base
 
   set_model DummyModel, :allow_attrs => [:attr1, :attr2]
 
-  after_action 
-
-  show_with {render :json => _instance.updated}
   destroy_with {}
-  update_with {}
+
+  extra_params = {
+    :sf => proc {obj.split(" ")}
+  }
+  
+  update_with(extra_params) {}
+
+  def obj
+    "a string"
+  end
 
   def _instance
     model_instance

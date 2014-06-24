@@ -25,7 +25,12 @@ class SomeController < ActionController::Base
   # set main model and default parameter keys white list for rails' strong parameter
   set_model ModelClass, :allow_attrs => [:attr1, :attr2, {:acc1_ids => []}]
 
-  update_with {redirect_to "/path/to/#{@model_class.id}"}
+  extra_params = {
+    :field1 => proc {current_user.field1},
+    :field2 => ->(context) {current_user.field2}
+  }
+
+  update_with(extra_params) {redirect_to "/path/to/#{@model_class.id}"}
   destroy_with {redirect_to "/path/to/model_class_index"}
 end
 ```
